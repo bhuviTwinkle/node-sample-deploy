@@ -1,0 +1,44 @@
+name: CI-CD Node Kubernetes
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build & Push Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/node-deploy-sample:2.0 .
+          docker push ${{ secrets.DOCKER_USERNAME }}/node-deploy-sample:2.0
+
+      - name: Copy k8s files to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "k8s/*"
+          target: "/home/ubuntu/k8s"
+
+      - name: Deploy to Kubernetes
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            kubectl apply -f /home/ubuntu/k8s/deployment.yaml
+            kubectl apply -f /home/ubuntu/k8s/service.yaml
+            kubectl rollout restart deployment node-deploy-sample-deploy

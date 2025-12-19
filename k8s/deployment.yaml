@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-deploy-sample-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: node-deploy-sample
+  template:
+    metadata:
+      labels:
+        app: node-deploy-sample
+    spec:
+      containers:
+        - name: node-deploy-sample
+          image: bhuvi97twinkle/node-deploy-sample:2.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
