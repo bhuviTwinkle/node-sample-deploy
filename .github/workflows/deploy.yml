@@ -20,8 +20,8 @@ jobs:
 
       - name: Build & Push Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/node-deploy-sample:2.0 .
-          docker push ${{ secrets.DOCKER_USERNAME }}/node-deploy-sample:2.0
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/node-deploy-sample:2.1 .
+          docker push ${{ secrets.DOCKER_USERNAME }}/node-deploy-sample:2.1
 
       - name: Copy k8s files to EC2
         uses: appleboy/scp-action@v0.1.7

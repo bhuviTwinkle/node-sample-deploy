@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: node-deploy-sample
-          image: bhuvi97twinkle/node-deploy-sample:2.0
+          image: bhuvi97twinkle/node-deploy-sample:2.1
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
