@@ -3,10 +3,9 @@ kind: Service
 metadata:
   name: node-deploy-sample-service
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: node-deploy-sample
   ports:
-    - port: 3000
+    - port: 80
       targetPort: 3000
-      nodePort: 30007
