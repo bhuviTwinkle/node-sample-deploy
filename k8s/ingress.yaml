@@ -2,15 +2,15 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: node-deploy-sample-ingress
-  # Removed rewrite-target for simplicity
+  # Note: Removed the nginx rewrite annotation as Traefik uses different syntax
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik  # <--- Change this from 'nginx' to 'traefik'
   rules:
     - host: nodesampledeploy-techb.duckdns.org
       http:
         paths:
           - path: /
-            pathType: ImplementationSpecific # Changed from Prefix for better compatibility
+            pathType: Prefix
             backend:
               service:
                 name: node-deploy-sample-service
