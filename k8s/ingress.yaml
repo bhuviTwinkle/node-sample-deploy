@@ -2,7 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: node-deploy-sample-ingress
-  # Note: Removed the nginx rewrite annotation as Traefik uses different syntax
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
 spec:
   ingressClassName: traefik  # <--- Change this from 'nginx' to 'traefik'
   rules:
