@@ -2,8 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: node-deploy-sample-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+  # Removed rewrite-target for simplicity
 spec:
   ingressClassName: nginx
   rules:
@@ -11,7 +10,7 @@ spec:
       http:
         paths:
           - path: /
-            pathType: Prefix
+            pathType: ImplementationSpecific # Changed from Prefix for better compatibility
             backend:
               service:
                 name: node-deploy-sample-service
